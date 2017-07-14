@@ -23,9 +23,12 @@ public class RunnerSimple {
     YaSteps yaSteps;
 
     @Test
-    public void simpleTestYaPage(){
+    public void simpleTestYaPage() throws InterruptedException {
         yaSteps.openYa();
-        yaSteps.search("test");
-        Assert.assertTrue(yaSteps.isContainsResult());
+        yaSteps.init("max_koval31278", "0607KMa9269");
+        yaSteps.write();
+        yaSteps.send(" max_koval31278@mail.ru", "pro", "Send");
+        Assert.assertEquals("Ваше письмо отправлено. Перейти во Входящие", yaSteps.check());
+
     }
 }

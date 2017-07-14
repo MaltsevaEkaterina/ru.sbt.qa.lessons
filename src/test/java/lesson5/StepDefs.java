@@ -15,19 +15,28 @@ public class StepDefs {
     @Steps
     YaSteps yaSteps;
 
-    @Дано("открыта страница быстрого поиска Яндекс")
+    @Дано("открыта страница почты mail")
     public void openPageYa(){
         yaSteps.openYa();
     }
 
-    @Когда("в поле поиск введен текст \"(.*?)\"")
-    public void searchText(String text){
-        yaSteps.search(text);
-
+    @Когда("Выполнен вход на аккаунт почты")
+    public void initPage(String login, String password){
+        yaSteps.init(login, password);
     }
 
-    @Тогда("выполен поиск")
+    @Когда("Пишем письмо")
+    public void writeLetter(){
+        yaSteps.write();
+    }
+
+    @Когда("Отправленно письмо")
+    public void send(String whom, String topic, String text) throws InterruptedException {
+        yaSteps.send(whom, topic, text);
+    }
+
+    @Тогда("Проверка отправки")
     public void thenYa() {
-        Assert.assertTrue(yaSteps.isContainsResult());
+        Assert.assertEquals("Ваше письмо отправлено. Перейти во Входящие", yaSteps.check());
     }
 }

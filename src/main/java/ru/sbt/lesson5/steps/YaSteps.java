@@ -1,6 +1,7 @@
 package ru.sbt.lesson5.steps;
 
 import net.thucydides.core.annotations.Step;
+import org.openqa.selenium.By;
 import ru.sbt.lesson5.pages.Ya;
 
 /**
@@ -14,15 +15,32 @@ public class YaSteps {
         yaPage.open();
     }
 
-    @Step("Выполнен поиск по тексту {0}")
-    public void search(String text) {
-        yaPage.inputText.clear();
-        yaPage.inputText.type(text);
+    @Step("Выполнить вход в почту")
+    public void init(String login, String password) {
+        yaPage.inputLogin.type(login);
+        yaPage.inputPassword.type(password);
         yaPage.btnSearch.click();
     }
 
-    @Step("Успешно открыта страница с результатом")
-    public boolean isContainsResult(){
-        return yaPage.containsElements("[class = 'serp-list']");
+    @Step("Отправить письмо")
+    public void send(String whom, String topic, String text) throws InterruptedException {
+        yaPage.inputWhoom.sendKeys(whom);
+        yaPage.inputTopic.sendKeys(topic);
+        yaPage.getDriver().switchTo().frame(yaPage.getDriver().findElement(By.xpath("//iframe[contains(@id , 'toolkit')]")));
+        yaPage.inputText.sendKeys(text);
+        yaPage.getDriver().switchTo().parentFrame();
+        yaPage.btnSend.click();
     }
+
+    @Step("Написать письмо")
+    public void write(){
+        yaPage.btnWrite.click();
+    }
+
+    @Step("Проверить отправку письма")
+    public String check(){
+        return yaPage.getResult.getText();
+    }
+
+
 }
